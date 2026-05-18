@@ -1,0 +1,9 @@
+{
+  "name": "tezuka-osamu-library",
+  "version": "1.0.0",
+  "description": "Tezuka OSAMU Library — Unofficial Fan Archive",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "private": true
+}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://z-ai-cafe.github.io/TEZUKA-OSAMU-Library/sitemap.xml
