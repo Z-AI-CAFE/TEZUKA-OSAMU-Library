@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tezuka OSAMU Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #f5f0e8;
+      --ink:          #1a1a1a;
+      --ink-muted:    #4a4a4a;
+      --ink-faint:    #7a7a7a;
+      --green:        #2d5a3d;
+      --green-light:  #7aab8a;
+      --green-faint:  rgba(45, 90, 61, 0.15);
+      --frame-bg:     #1a1a1a;
+      --serif-head:   'Playfair Display', Georgia, serif;
+      --serif-body:   'Lora', Georgia, serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--serif-body);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.8;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      background: var(--ink);
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+      border-bottom: 3px solid var(--green);
+    }
+    .site-header__eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      color: var(--green-light);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .site-header__title {
+      font-family: var(--serif-head);
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 400;
+      color: var(--bg);
+      letter-spacing: 0.06em;
+      margin-bottom: 0.5rem;
+    }
+    .site-header__subtitle {
+      font-family: var(--serif-body);
+      font-style: italic;
+      font-size: 0.92rem;
+      color: var(--green-light);
+      letter-spacing: 0.08em;
+    }
+
+    /* ── NAV ── */
+    .site-nav {
+      background: var(--bg);
+      border-bottom: 1px solid var(--green);
+      padding: 0.8rem 1.5rem;
+      display: flex;
+      gap: 1.25rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .site-nav a {
+      font-size: 0.7rem;
+      color: var(--green);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+      white-space: nowrap;
+    }
+    .site-nav a:hover { border-bottom-color: var(--green); }
+
+    /* ── INTRO ── */
+    .site-intro {
+      max-width: 660px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+      text-align: center;
+    }
+    .site-intro p {
+      font-style: italic;
+      font-size: 0.92rem;
+      color: var(--ink-muted);
+      line-height: 2;
+    }
+
+    /* ── CHAPTER DIVIDER ── */
+    .chapter-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0 2rem;
+      margin: 3.5rem auto 0;
+      max-width: 1000px;
+    }
+    .chapter-divider__line {
+      flex: 1;
+      height: 1px;
+      background: var(--green);
+      opacity: 0.35;
+    }
+    .chapter-divider__label {
+      font-family: var(--serif-head);
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      color: var(--green);
+      text-transform: uppercase;
+    }
+
+    /* ── CHAPTER SECTION ── */
+    .chapter {
+      padding: 2rem 2rem 4rem;
+      border-bottom: 1px solid var(--green-faint);
+      margin: 0 auto;
+      max-width: 1000px;
+    }
+    .chapter-header { margin-bottom: 2.5rem; }
+    .chapter-header__num {
+      display: block;
+      font-family: var(--serif-head);
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      color: var(--green);
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .chapter-header__title {
+      font-family: var(--serif-head);
+      font-size: clamp(1.2rem, 3vw, 1.65rem);
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 0.8rem;
+      line-height: 1.35;
+    }
+    .chapter-header__lead {
+      font-style: italic;
+      font-size: 0.86rem;
+      color: var(--ink-muted);
+      border-left: 2px solid var(--green);
+      padding-left: 1rem;
+      max-width: 580px;
+      line-height: 1.85;
+    }
+
+    /* ── VIDEO LIST ── */
+    .video-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3.5rem;
+    }
+
+    /* ── VIDEO ITEM ── */
+    .video-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    @media (max-width: 680px) {
+      .video-item { grid-template-columns: 1fr; }
+    }
+
+    /* ── VIDEO FRAME ── */
+    .video-frame {
+      background: var(--frame-bg);
+      padding: 10px;
+      border: 1px solid var(--green);
+    }
+    .video-frame__link {
+      display: block;
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      text-decoration: none;
+    }
+    .video-frame__thumb {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.3s;
+    }
+    .video-frame__play {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .video-frame__play svg {
+      width: 60px;
+      height: 60px;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.7));
+    }
+    .video-frame__link:hover .video-frame__thumb { opacity: 0.85; }
+    .video-frame__link:hover .video-frame__play  { opacity: 1; }
+    .video-frame__label {
+      margin-top: 6px;
+      text-align: right;
+      font-size: 0.6rem;
+      color: var(--green-light);
+      letter-spacing: 0.08em;
+      font-style: italic;
+    }
+
+    /* ── VIDEO INFO ── */
+    .video-info { padding-top: 0.25rem; }
+
+    .video-tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.8rem;
+    }
+    .video-tag {
+      font-size: 0.61rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green);
+      border: 1px solid var(--green);
+      padding: 2px 9px;
+    }
+
+    .video-title {
+      font-family: var(--serif-head);
+      font-size: 1.08rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 0.8rem;
+      line-height: 1.4;
+    }
+
+    .video-lead {
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      line-height: 1.9;
+      margin-bottom: 1rem;
+    }
+
+    .video-caption {
+      font-size: 0.69rem;
+      color: var(--ink-faint);
+      font-style: italic;
+      line-height: 1.75;
+      border-top: 1px solid var(--green-faint);
+      padding-top: 0.75rem;
+    }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      background: var(--ink);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      margin-top: 3rem;
+    }
+    .site-footer p {
+      font-size: 0.72rem;
+      color: #7a7a7a;
+      line-height: 1.9;
+      margin-bottom: 0.2rem;
+      font-style: italic;
+    }
+    .site-footer a { color: var(--green-light); text-decoration: none; }
+    .site-footer a:hover { text-decoration: underline; }
+    .site-footer__copy {
+      margin-top: 1.25rem;
+      font-size: 0.64rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <p class="site-header__eyebrow">From the Official Tezuka Productions Channel — Unofficial Fan Archive</p>
+  <h1 class="site-header__title">Tezuka OSAMU Library</h1>
+  <p class="site-header__subtitle">Aesthetic, Strange, and Philosophical</p>
+</header>
+
+<nav class="site-nav" id="site-nav"></nav>
+
+<section class="site-intro">
+  <p>
+    Now that AI has become reality, one artist predicted it all decades ago.<br>
+    Life alongside robots. Love for the grotesque. The darkness of human nature. And a prayer for the earth.<br>
+    The short works of Tezuka Osamu speak to us once more — quietly, from across the years.
+  </p>
+</section>
+
+<main id="main-content"></main>
+
+<footer class="site-footer">
+  <p>This is an unofficial fan archive created to introduce the works of Tezuka Osamu to Japanese-language learners around the world.</p>
+  <p>The creator of this site has no affiliation with <a href="https://www.youtube.com/@tezukaproductions" target="_blank" rel="noopener">Tezuka Productions</a>.</p>
+  <p>All videos featured here belong to the <a href="https://www.youtube.com/@tezukaproductions" target="_blank" rel="noopener">official Tezuka Productions YouTube channel</a>.</p>
+  <p class="site-footer__copy">© 2026 Tezuka OSAMU Library — Unofficial Fan Archive</p>
+</footer>
+
+<script>
+/* ================================================================
+   ★★★ VIDEO DATA — Edit here to add or update videos ★★★
+   ================================================================
+   HOW TO ADD A NEW VIDEO:
+   Add one object to the top of the VIDEOS array below.
+
+   {
+     id:      'YouTube video ID',   // the string after ?v= in the URL
+     title:   'Work title',
+     chapter: 'sf',                 // sf / romance / noir / others
+     tags:    ['Tag 1', 'Tag 2'],
+     lead:    'Short introduction (2–3 sentences)'
+   },
+   ================================================================ */
+
+const CHAPTERS = {
+  sf: {
+    num:   'Ⅰ',
+    title: 'SF, AI & The Human Soul',
+    lead:  'Prophecies written decades before AI became reality — resonating more urgently with every passing year.<br>Welcome to the intellectual, philosophical world of Tezuka\'s science fiction.'
+  },
+  romance: {
+    num:   'Ⅱ',
+    title: 'Dark Romance & Love for the Grotesque',
+    lead:  'Love that crosses every boundary of the human form.<br>Romance with the grotesque, obsession, and bittersweet tragedy.'
+  },
+  noir: {
+    num:   'Ⅲ',
+    title: 'Noir & Twisted Whims',
+    lead:  'Dark fables for adults.<br>A world of twisted human desire and strangely absurd fate.'
+  },
+  others: {
+    num:   'Ⅳ',
+    title: 'For the Earth & All Living Things',
+    lead:  'Tezuka Osamu — who spent a lifetime drawing his love for the earth, his longing for peace, and the preciousness of life.'
+  }
+};
+
+const VIDEOS = [
+
+  // ── Chapter Ⅰ: SF, AI & The Human Soul ──────────────────────
+  {
+    id:      'rO-FUyd8KoQ',
+    title:   'Haetатаki — The Fly Swatter',
+    chapter: 'sf',
+    tags:    ['SF', 'AI', 'Psychology'],
+    lead:    'A world where every household has a domestic robot. A story of marriage — read in the age of AI.'
+  },
+  {
+    id:      'bzPb77V3j6k',
+    title:   'W3 — Wonder Three',
+    chapter: 'sf',
+    tags:    ['SF', 'Cosmic', 'Humanist'],
+    lead:    'When aliens arrive to assess the earth, what do they make of humanity? The truth about this planet — as seen by three visitors disguised as animals.'
+  },
+
+  // ── Chapter Ⅱ: Dark Romance & Love for the Grotesque ─────────
+  {
+    id:      'nbbvk6nIMPc',
+    title:   'Balbora',
+    chapter: 'romance',
+    tags:    ['Aesthetic', 'Madness', 'Obsession'],
+    lead:    'A brilliant writer meets a filthy, mysterious girl on the street. A decadent story of madness, art, and love.'
+  },
+  {
+    id:      'o6oB8gAbN9s',
+    title:   'Fukuro — The Sac',
+    chapter: 'romance',
+    tags:    ['Medical', 'Grotesque', 'Horror'],
+    lead:    'What if someone else were living inside your body? A medical horror short story.'
+  },
+  {
+    id:      'psun761jHLE',
+    title:   'Sareba Ārī — Farewell, Ārī',
+    chapter: 'romance',
+    tags:    ['Grotesque', 'Desert', 'Farewell'],
+    lead:    'A girl with the ears of a wildcat, encountered in the desert. Neither fully human nor beast — a fragile, dangerous farewell.'
+  },
+  {
+    id:      'uaH56m0rxCY',
+    title:   'MW',
+    chapter: 'romance',
+    tags:    ['Controversial', 'Evil', 'Obsession'],
+    lead:    'Every form of evil embodied in one beautiful man. Love and hatred, the sacred and the sinful intertwined — Tezuka\'s most controversial work.'
+  },
+  {
+    id:      'fE-9l2iWVOE',
+    title:   'Yoru no Koe — Voice in the Night',
+    chapter: 'romance',
+    tags:    ['Secret', 'Night', 'Mystery'],
+    lead:    'The Prince and the Pauper — for adults.'
+  },
+  {
+    id:      'aRy660pbBgU',
+    title:   'Apollo\'s Song',
+    chapter: 'romance',
+    tags:    ['Love & Curse', 'Reincarnation', 'Obsession'],
+    lead:    'A man cursed never to love, who returns again and again across lifetimes in search of it. A story of obsession and fate that transcends time.'
+  },
+
+  // ── Chapter Ⅲ: Noir & Twisted Whims ──────────────────────────
+  {
+    id:      'vjYQi6q_gX8',
+    title:   'Yarō to Dangai — The Cliff',
+    chapter: 'noir',
+    tags:    ['Absurd', 'Black Humor', 'Human Folly'],
+    lead:    'A cliff known as the Cliff of Delusion. An escaped convict barricades himself in its cave, holding a hostage.'
+  },
+  {
+    id:      'uOV_9MVW5RU',
+    title:   'Mogami-dono Shimatsu — The Lord\'s Double',
+    chapter: 'noir',
+    tags:    ['Period Drama', 'Revenge', 'Noir'],
+    lead:    'A peasant forced to serve as his lord\'s body double plots his revenge. The revenge succeeds — but...'
+  },
+  {
+    id:      'Wbx3n2rkgRs',
+    title:   'Rakuban — Cave-in',
+    chapter: 'noir',
+    tags:    ['Psychological', 'Memory', 'Suspense'],
+    lead:    'Memory always lies. A quiet psychological duel between two men, played out in a sealed room.'
+  },
+  {
+    id:      'FxHleQyPnH8',
+    title:   'The Blue Shadow at the Backstop',
+    chapter: 'noir',
+    tags:    ['Mystery', 'Baseball', 'The Price'],
+    lead:    'A mysterious drug that reveals a "blue shadow" — follow its guidance, and success will follow. But every drug has its price.'
+  },
+  {
+    id:      'oxsXud2-4Xk',
+    title:   'Tako no Ashi — Octopus Legs',
+    chapter: 'noir',
+    tags:    ['Black Humor', 'Flash Fiction', 'Shocking'],
+    lead:    'Seven minutes. That is all it takes to leave a lasting wound. A merciless flash story by Tezuka Osamu — black humour at its darkest.'
+  },
+  {
+    id:      's56PSEiik4A',
+    title:   'Bypass no Yoru — Night on the Bypass',
+    chapter: 'noir',
+    tags:    ['Night', 'Absurd', 'Short Story'],
+    lead:    'A bypass road at midnight. A strange encounter in the lightless dark.'
+  },
+
+  // ── Chapter Ⅳ: For the Earth & All Living Things ─────────────
+  {
+    id:      '9qirDT_0BVk',
+    title:   'Korosuke\'s Bridge',
+    chapter: 'others',
+    tags:    ['Humanist', 'Life'],
+    lead:    'A friendship between a boy and a wild deer. On living alongside nature.'
+  },
+  {
+    id:      '5CB-o5q896k',
+    title:   'Kami no Toride — Paper Fortress',
+    chapter: 'others',
+    tags:    ['War', 'Peace', 'Autobiographical'],
+    lead:    'Tezuka Osamu\'s own wartime childhood, drawn from memory.'
+  }
+
+]; // ← Add new videos above this line
+
+
+/* ================================================================
+   Page rendering logic (no need to edit below)
+   ================================================================ */
+
+const SUBTITLE_CAPTION =
+  'We recommend listening to the original Japanese audio while using YouTube\'s \'Auto-translate\' subtitle feature — to feel the full literary atmosphere of the original.';
+
+// Navigation
+(function buildNav() {
+  const nav = document.getElementById('site-nav');
+  Object.entries(CHAPTERS).forEach(([key, ch]) => {
+    const a = document.createElement('a');
+    a.href = '#chapter-' + key;
+    a.textContent = ch.num + '. ' + ch.title;
+    nav.appendChild(a);
+  });
+})();
+
+// Chapter and video rendering
+(function buildContent() {
+  const main = document.getElementById('main-content');
+
+  Object.entries(CHAPTERS).forEach(([key, ch]) => {
+    const chVideos = VIDEOS.filter(v => v.chapter === key);
+    if (chVideos.length === 0) return;
+
+    // Divider
+    const divider = document.createElement('div');
+    divider.className = 'chapter-divider';
+    divider.innerHTML = `
+      <div class="chapter-divider__line"></div>
+      <span class="chapter-divider__label">Chapter ${ch.num}</span>
+      <div class="chapter-divider__line"></div>`;
+    main.appendChild(divider);
+
+    // Chapter section
+    const section = document.createElement('section');
+    section.className = 'chapter';
+    section.id = 'chapter-' + key;
+    section.innerHTML = `
+      <div class="chapter-header">
+        <span class="chapter-header__num">Chapter ${ch.num}</span>
+        <h2 class="chapter-header__title">${ch.title}</h2>
+        <p class="chapter-header__lead">${ch.lead}</p>
+      </div>
+      <div class="video-list"></div>`;
+    main.appendChild(section);
+
+    // Video items
+    const list = section.querySelector('.video-list');
+    chVideos.forEach(v => {
+      const item = document.createElement('div');
+      item.className = 'video-item';
+      item.innerHTML = `
+        <div class="video-frame">
+          <a class="video-frame__link"
+             href="https://www.youtube.com/watch?v=${v.id}"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="Watch ${v.title} on YouTube">
+            <img class="video-frame__thumb"
+                 src="https://img.youtube.com/vi/${v.id}/hqdefault.jpg"
+                 alt="${v.title}"
+                 loading="lazy">
+            <div class="video-frame__play">
+              <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="40" cy="40" r="38" fill="rgba(0,0,0,0.6)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                <polygon points="32,24 60,40 32,56" fill="white"/>
+              </svg>
+            </div>
+          </a>
+          <p class="video-frame__label">Tezuka Productions Official Channel</p>
+        </div>
+        <div class="video-info">
+          <div class="video-tags">
+            ${v.tags.map(t => `<span class="video-tag">${t}</span>`).join('')}
+          </div>
+          <h3 class="video-title">${v.title}</h3>
+          <p class="video-lead">${v.lead}</p>
+          <p class="video-caption">${SUBTITLE_CAPTION}</p>
+        </div>`;
+      list.appendChild(item);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
